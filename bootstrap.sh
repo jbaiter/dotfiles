@@ -81,13 +81,20 @@ install_bspwm() {
                      libxcb-xinerama0-dev libasound2-dev libxcb-xtest0-dev
     git clone https://github.com/baskerville/bspwm.git ~/.build/bspwm
     git clone https://github.com/baskerville/sxhkd.git ~/.build/sxhkd
-    git clone https://github.com/LemonBoy/bar.git ~/.build/lemonbar
+    git clone https://github.com/krypt-n/bar.git ~/.build/lemonbar
+    git clone https://github.com/baskerville/xtitle.git ~/.build/xtitle
+    git clone https://github.com/baskerville/xdo.git ~/.build/xdo
 
-    for dir in ~/.build/bspwm ~/.build/sxhkd ~/.build/lemonbar; do
-        cd $dir
+    for proj in bspwm sxhkd lemonbar xtitle xdo; do
+        cd ~/.build/$dir
         make
         sudo make install
     done
+
+    git clone https://github.com/baskverville/sutils.git ~/.build/sutils
+    cd ~/.build/sutils
+    make
+    make BINPREFIX=~/.bin/ install
 }
 
 install_basics
