@@ -78,7 +78,8 @@ install_bspwm() {
     mkdir -p ~/.build
     sudo apt install git gcc make xcb libxcb-util0-dev libxcb-ewmh-dev \
                      libxcb-randr0-dev libxcb-icccm4-dev libxcb-keysyms1-dev \
-                     libxcb-xinerama0-dev libasound2-dev libxcb-xtest0-dev
+                     libxcb-xinerama0-dev libasound2-dev libxcb-xtest0-dev \
+                     python3.5
     git clone https://github.com/baskerville/bspwm.git ~/.build/bspwm
     git clone https://github.com/baskerville/sxhkd.git ~/.build/sxhkd
     git clone https://github.com/krypt-n/bar.git ~/.build/lemonbar
