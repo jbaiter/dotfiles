@@ -1,0 +1,12 @@
+[user]
+	name = Johannes Baiter
+	email = johannes.baiter@gmail.com
+[github]
+	user = jbaiter
+[core]
+	autocrlf = input
+	editor = nvim
+[color]
+	ui = true
+[merge]
+	tool = vimdiff

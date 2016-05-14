@@ -1,0 +1,28 @@
+zstyle ':prezto:*:*' color 'yes'
+
+# The order matters.
+zstyle ':prezto:load' pmodule \
+  'environment' \
+  'editor' \
+  'history' \
+  'directory' \
+  'spectrum' \
+  'utility' \
+  'completion' \
+  'syntax-highlighting' \
+  'history-substring-search' \
+  'python' \
+  'tmux' \
+  'gpg' \
+  'prompt'
+
+zstyle ':prezto:module:editor' key-bindings 'vi'
+zstyle ':prezto:module:editor' dot-expansion 'yes'
+zstyle ':prezto:module:prompt' theme 'jbaiter'
+
+if [ -n "$DISPLAY" ]; then
+    # Auto start a session when Zsh is launched in a local terminal.
+    zstyle ':prezto:module:tmux:auto-start' local 'yes'
+fi
+
+zstyle ':prezto:module:tmux:auto-start' remote 'yes'

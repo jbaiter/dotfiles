@@ -1,0 +1,26 @@
+"hg6898
+
+loadplugins '\.(js|penta)$'
+group user
+
+set showtabline=never
+set go=ns
+set hintkeys=hjklasdfgzuiopqwertnmyxcvb
+set showstatuslinks=command
+"set nofullscreen
+
+" Use solarized color scheme
+colorscheme solarized-dark
+
+hi FontFixed -a font: 12px "Meslo LG L DZ" !important;
+
+nmap j 4<Down>
+nmap k 4<Up>
+nmap J <C-d>
+nmap K <C-u>
+
+js editor.defaultRegister="+"
+
+au Fullscreen .* :set guioptions+=s
+
+" vim: set ft=pentadactyl:
