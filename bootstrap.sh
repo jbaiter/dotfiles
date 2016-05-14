@@ -99,6 +99,6 @@ install_bspwm() {
 }
 
 install_basics
-install_nvim
+nvim -v &> /dev/null || install_nvim
 install_bspwm
 install_dotfiles
