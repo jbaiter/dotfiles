@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 
 install_basics() {
     sudo apt-get install git apt
@@ -87,7 +88,7 @@ install_bspwm() {
     git clone https://github.com/baskerville/xdo.git ~/.build/xdo
 
     for proj in bspwm sxhkd lemonbar xtitle xdo; do
-        cd ~/.build/$dir
+        cd ~/.build/$proj
         make
         sudo make install
     done
