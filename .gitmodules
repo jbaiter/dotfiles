@@ -1,0 +1,6 @@
+[submodule "home/.tmux/plugins/tpm"]
+	path = home/.tmux/plugins/tpm
+	url = https://github.com/tmux-plugins/tpm
+[submodule "home/.zprezto"]
+	path = home/.zprezto
+	url = https://github.com/jbaiter/prezto.git
