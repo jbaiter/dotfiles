@@ -82,7 +82,7 @@ install_bspwm() {
                      python3.5
     git clone https://github.com/baskerville/bspwm.git ~/.build/bspwm
     git clone https://github.com/baskerville/sxhkd.git ~/.build/sxhkd
-    git clone https://github.com/krypt-n/bar.git ~/.build/lemonbar
+    git clone https://github.com/LemonBoy/bar.git ~/.build/lemonbar
     git clone https://github.com/baskerville/xtitle.git ~/.build/xtitle
     git clone https://github.com/baskerville/xdo.git ~/.build/xdo
 
