@@ -24,9 +24,6 @@ alias vim="nvim"
 # Load node version manager
 [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
 
-# Load virtualenvwrapper
-. /usr/share/virtualenvwrapper/virtualenvwrapper_lazy.sh
-
 if [ $(hostname) = 'workstation' ]; then
     # Activate torch
     . /home/jojo/.torch/install/bin/torch-activate
