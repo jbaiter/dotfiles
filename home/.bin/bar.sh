@@ -1,7 +1,6 @@
-#!/bin/bash
+#!/bin/sh
 
 # configurables
-height=24
 if [ $(hostname) = 'workstation' ]; then
     width=1920
     pos_x=1080
@@ -16,6 +15,6 @@ set -f
 
 bar.py \
     | lemonbar -a 32 -n $wm_name -f $font -f $icon_font \
-               -g "${width}x${height}+${x_pos}+${y_pos}" \
+               -g "${width}x${PANEL_HEIGHT}+${x_pos}+${y_pos}" \
                -F $color_foreground -B $color_background \
     | sh
