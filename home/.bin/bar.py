@@ -260,18 +260,18 @@ class Clock(Widget):
 
 
 class Wifi(Widget):
-    icon = ' \ue048 '
+    icons = ('\ue047', '\ue048')
 
     @staticmethod
     def available():
         try:
-            return len(output_of(['iw', 'dev'])) > 0
+            return len(output_of(['sudo', 'iw', 'dev'])) > 0
         except:
             return False
 
     def render(self):
         strength = 0.0
-        iw = output_of(['iwgetid']).split()
+        iw = output_of(['sudo', 'iwgetid']).split()
         profile = ''
         if len(iw) == 0:
             profile = fg(color['muted'], 'disconnected')
@@ -288,8 +288,13 @@ class Wifi(Widget):
                     if cols[0][:-1] == iw[0]:
                         strength = float(cols[2])
                         break
-        c = color['good'] if strength > 40 else color['bad']
-        profile = fg(c, self.icon) + profile
+        if strength > 40:
+            c = color['good']
+            icon = self.icons[1]
+        else:
+            c = color['bad']
+            icon = self.icons[0]
+        profile = fg(c, icon) + ' ' + profile
         if strength > 0:
             profile += ' ' + fg(color['muted'], str(int(strength)))
         return profile
