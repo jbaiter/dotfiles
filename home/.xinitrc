@@ -52,6 +52,9 @@ redshift -l 48.367842:10.892248 -t 5500:4000 &
 # Hide mouse cursor after 2.5 seconds of inactivity
 unclutter -idle 2.5 &
 
+# Start compositor
+compton &
+
 sxhkd &
 $HOME/.bin/bar.sh &
 urxvt &
