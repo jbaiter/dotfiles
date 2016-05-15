@@ -8,6 +8,7 @@ super + p
     dmenu_run
 
 super + {e,r}
+    pactl set-sink-mute $PA_DEFAULT_SINK 0; \
     pactl set-sink-volume $PA_DEFAULT_SINK {-,+}10%
 
 super + u
