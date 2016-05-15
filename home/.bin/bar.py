@@ -180,25 +180,48 @@ class WindowTitle(Widget):
 class Battery(Widget):
     icons = [chr(c) for c in chain([0xe242], range(0xe24c, 0xe255))]
     icon_charging = '\ue239'
+    icon_unknown = '\ue23a'
+    icon_rate = '\ue215'
+    pat = re.compile(
+        r'\s*?(state|energy-rate|percentage):\s*?([0-9.]+|\w+)\s*[W%]?')
 
     @staticmethod
     def available():
         return file_contents('/sys/class/power_supply/BAT0/present') == '1'
 
+    def __init__(self, pipe, hooks):
+        self.client = subprocess.Popen(
+            ['upower', '-i', '/org/freedesktop/UPower/devices/battery_BAT0',
+             '--monitor-detail'], stdout=pipe)
+        hooks[self.pat] = self
+        self.rate = None
+        self.charge = None
+        self.discharging = True
+
+    def update(self, line):
+        if not line:
+            return
+        field, value = self.pat.match(line).groups()
+        if field == 'energy-rate':
+            self.rate = float(value)
+        elif field == 'percentage':
+            self.charge = int(value)
+        elif field == 'state':
+            self.discharging = (value == 'discharging')
+
     def render(self):
-        try:
-            charge = int(file_contents(
-                '/sys/class/power_supply/BAT0/capacity'))
-        except:
-            charge = 0
-        c = color['bad'] if charge < 30 else color['good']
-        bat_status = file_contents('/sys/class/power_supply/BAT0/status')
-        if bat_status != 'Discharging':
+        c = color['bad'] if not self.charge or self.charge < 30 else color['good']
+        if self.charge is None:
+            icon = ' %%{T2}%s%%{T1} ' % self.icon_unknown
+        elif not self.discharging:
             icon = ' %%{T2}%s%%{T1} ' % self.icon_charging
         else:
             icon = ' %%{T2}%s%%{T1} ' % self.icons[
-                round(charge / 100 * (len(self.icons) - 1))]
-        return fg(c, icon) + str(charge)
+                round(self.charge / 100 * (len(self.icons) - 1))]
+        return " {}{} {}{} ".format(
+            fg(c, icon), self.charge or '?',
+            fg(color['bad' if self.discharging else 'good'], self.icon_rate),
+            '?' if self.rate is None else int(self.rate))
 
 
 class PulseAudio(Widget):
@@ -296,8 +319,41 @@ class Wifi(Widget):
             icon = self.icons[0]
         profile = fg(c, icon) + ' ' + profile
         if strength > 0:
-            profile += ' ' + fg(color['muted'], str(int(strength)))
+            profile += ' ' + fg(color['muted'], str(int(strength))) + ' '
         return profile
+
+
+class Ping(Widget):
+    latency_icons = ('\ue191', '\ue192', '\ue193', '\ue194', '\ue195', '\ue196')
+    missed_icon = '\ue140'
+    hook_pat = re.compile(r'^(64 bytes from|no answer yet).*?')
+    pat = re.compile(r'^.*time=([0-9.]+) ms$')
+
+    def __init__(self, pipe, hooks):
+        client = subprocess.Popen(['ping', '-W', '5', '-i', '10', '8.8.8.8'],
+                                  stdout=pipe)
+        atexit.register(client.kill)
+        self.latency = 1
+        self.packet_lost = False
+        hooks[self.hook_pat] = self
+
+    def update(self, line):
+        if not line:
+            return
+        elif line.startswith('no answer'):
+            self.packet_lost = True
+            return
+        self.packet_lost = False
+        latency = self.pat.match(line).group(1)
+        latency = float(latency)
+        self.latency = latency
+
+    def render(self):
+        c = color['good' if self.latency < 500 else 'bad']
+        icon_idx = min((int(self.latency)//100)-1, 5)
+        return "{}{}".format(
+            fg(c, self.latency_icons[icon_idx]),
+            fg(colors['bad'], self.missed_icon) if self.packet_lost else '')
 
 
 class MPD(Widget):
@@ -343,7 +399,7 @@ class MPD(Widget):
         return ''
 
 
-widgets = ['%{l}', Bspwm, '%{c}', WindowTitle, '%{r}', Wifi, Battery,
+widgets = ['%{l}', Bspwm, '%{c}', WindowTitle, '%{r}', Wifi, Ping, Battery,
            PulseAudio, Clock]
 
 if __name__ == '__main__':
@@ -373,7 +429,11 @@ if __name__ == '__main__':
                 lines = os.read(p, 4096).decode('utf-8').splitlines()
                 for line in lines:
                     for first, hook in hooks.items():
-                        if line.startswith(first):
+                        if isinstance(first, str):
+                            matches = line.startswith(first)
+                        else:
+                            matches = first.match(line)
+                        if matches:
                             updated = True
                             hook.update(line)
         else:
