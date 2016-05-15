@@ -99,7 +99,22 @@ install_bspwm() {
     make BINPREFIX=~/.bin/ install
 }
 
+install_compton() {
+    mkdir -p ~/.build
+    sudo apt install libconfig-dev libx11-dev libxcomposite-dev libxdamage-dev \
+                     libxfixes-dev libxext-dev libxrender-dev libxrandr-dev \
+                     libxinerama-dev pkg-config make x11proto-core-dev \
+                     x11-utils libpcre3-dev libdrm-dev libgl1-mesa-dev \
+                     libdbus-1-dev asciidoc
+    git clone https://github.com/chjj/compton.git ~/.build/compton
+    cd ~/.build/compton
+    make
+    make docs
+    sudo make install
+}
+
 install_basics
 nvim -v &> /dev/null || install_nvim
 install_bspwm
+install_compton
 install_dotfiles
