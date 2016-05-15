@@ -255,7 +255,8 @@ class PulseAudio(Widget):
 
 class Clock(Widget):
     def render(self):
-        return datetime.datetime.now().strftime('  %a %b %d  %H:%M  ')
+        return datetime.datetime.now().strftime(
+            '  \ue1cd %a %b %d  \ue017 %H:%M  ')
 
 
 class Wifi(Widget):
