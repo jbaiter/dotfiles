@@ -162,16 +162,16 @@ class Bspwm(Widget):
 class WindowTitle(Widget):
     def __init__(self, pipe, hooks):
         self.client = subprocess.Popen(
-            ['xtitle', '-f', 'window_title: %s', '-s', '-i', '-t', '100'],
+            ['xtitle', '-f', 'window_title|%s', '-s', '-i', '-t', '100'],
             stdout=pipe)
         atexit.register(self.client.kill)
-        hooks['window_title: '] = self
+        hooks['window_title|'] = self
         self.title = ''
 
     def update(self, line):
         if line is None:
             return ''
-        self.title = line.strip().replace('window_title: ', '')
+        self.title = line.strip().replace('window_title|', '')
 
     def render(self):
         return self.title
