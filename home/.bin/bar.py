@@ -350,7 +350,7 @@ class Ping(Widget):
 
     def render(self):
         c = color['good' if self.latency < 500 else 'bad']
-        icon_idx = min((int(self.latency)//100)-1, 5)
+        icon_idx = min((int(self.latency)//100), 5)
         return "{}{}".format(
             fg(c, self.latency_icons[icon_idx]),
             fg(colors['bad'], self.missed_icon) if self.packet_lost else '')
