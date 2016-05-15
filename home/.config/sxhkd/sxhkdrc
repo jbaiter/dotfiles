@@ -10,14 +10,14 @@ super + p
 super + {e,r}
     pactl set-sink-volume $PA_DEFAULT_SINK {-,+}10%
 
+super + u
+    pactl set-sink-mute $PA_DEFAULT_SINK toggle
+
 super + o
     connman_dmenu
 
 super + i
     passmenu --type
-
-super + u
-    pactl set-sink-mute $PA_DEFAULT_SINK toggle
 
 super + {a,s}
     sudo ~/.bin/backlight {+,-}5%
