@@ -151,8 +151,10 @@ class Bspwm(Widget):
                     icon = self.icons[
                         'urgent' if desktop.is_urgent else 'occupied']
                     out.append(fg(icon_color, icon))
-                else:
+                elif desktop.is_occupied:
                     out.append(self.icons['free'])
+                else:
+                    out.append(fg(color['muted'], self.icons['free']))
                 out.append("%{A}")
         return "".join(out)
 
