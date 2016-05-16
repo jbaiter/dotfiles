@@ -15,6 +15,6 @@ set -f
 
 bar.py \
     | lemonbar -a 32 -n $wm_name -f $font -f $icon_font \
-               -g "${width}x${PANEL_HEIGHT}+${x_pos}+${y_pos}" \
+               -g "${width}x${PANEL_HEIGHT}+${pos_x}+${pos_y}" \
                -F $color_foreground -B $color_background \
     | sh
