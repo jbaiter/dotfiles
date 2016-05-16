@@ -91,7 +91,7 @@ super + {q,w}
     bspc monitor -f {secondary,main}
 
 super + {shift,alt} + {q,w}
-    bspc {window,desktop} -m {secondary,main}
+    bspc {node,desktop} -m {secondary,main}
 
 #
 # preselect
