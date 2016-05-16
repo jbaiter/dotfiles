@@ -292,7 +292,7 @@ class Wifi(Widget):
     @staticmethod
     def available():
         try:
-            return len(output_of(['sudo', 'iw', 'dev'])) > 0
+            return len(output_of(['sudo', '-n', 'iw', 'dev'])) > 0
         except:
             return False
 
