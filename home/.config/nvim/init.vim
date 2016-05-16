@@ -22,8 +22,9 @@ Plug 'ervandew/supertab'
 " " syntax and error highlighter
 Plug 'scrooloose/syntastic'
 " very agreeable colorscheme
-Plug 'altercation/vim-colors-solarized'
+"Plug 'altercation/vim-colors-solarized'
 "Plug 'chriskempson/vim-tomorrow-theme'
+Plug 'easysid/mod8.vim'
 " quoting/parenthesizing made simple
 Plug 'tpope/vim-surround'
 " snip-snap
@@ -146,7 +147,7 @@ if exists("&colorcolumn")
     set colorcolumn=79
 endif
 """ Moving Around/Editing
-set cursorline              " have a line indicate the cursor location
+"set cursorline              " have a line indicate the cursor location
 set ruler                   " show the cursor position all the time
 set nostartofline           " Avoid moving cursor to BOL when jumping around
 set virtualedit=block       " Let cursor move past the last char in <C-v> mode
@@ -222,16 +223,16 @@ set hlsearch                " Highlight searches by default.
 set incsearch               " Incrementally search while typing a /regex
 
 """" Display
-let g:solarized_termtrans=1
-let g:solarized_termcolors=256
-if has('gui-running')
-    let g:solarized_visibility="low"
-"    colorscheme Tomorrow
-else
-    let g:solarized_visibility="normal"
-    "colorscheme Tomorrow-Night
-endif
-colorscheme solarized
+"let g:solarized_termtrans=0
+"let g:solarized_termcolors=256
+"if has('gui-running')
+"    let g:solarized_visibility="low"
+""    colorscheme Tomorrow
+"else
+"let g:solarized_visibility="normal"
+"    "colorscheme Tomorrow-Night
+"endif
+colorscheme mod8
 
 """ Syntastic configuration
 let g:syntastic_mode_map = { 'mode': 'passive',

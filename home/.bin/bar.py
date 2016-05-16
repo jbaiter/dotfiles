@@ -19,6 +19,10 @@ color = {
     "muted": "#999999",
 }
 
+# TODO: Temperature widget
+# TODO: CPU usage widget
+# TODO: GPU usage widget
+# TODO: Memory usage widget
 
 def fg(color, text):
     if not color:
@@ -370,14 +374,7 @@ class MPD(Widget):
         except:
             return False
 
-    def __init__(self, pipe, hooks):
-        client = subprocess.Popen(['mpc', 'idleloop', 'player'], stdout=pipe)
-        atexit.register(client.kill)
-        self.song = ''
-        self.status = 'stopped'
-        hooks['player'] = self
-
-    def update(self, line):
+    def render(self):
         status = output_of('mpc').splitlines()
         if len(status) < 3:
             self.song = ''
@@ -390,8 +387,6 @@ class MPD(Widget):
             if has_song:
                 self.song = self.song.rsplit('/', 1)[1]
             self.status = status[1].split(None, 1)[0][1:-1]
-
-    def render(self):
         if self.status == 'playing':
             return self.icon_playing + fg(color['muted'], self.song)
         elif self.status == 'paused':

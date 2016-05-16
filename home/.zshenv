@@ -18,7 +18,7 @@ export LC_ALL=en_US.UTF-8
 export LESS="-R"
 export WORKON_HOME=$HOME/.envs
 export MOZ_PLUGIN_PATH='/usr/lib/mozilla/plugins'
-export TERM="screen-256color"
+#export TERM="screen-256color"
 export NVM_DIR="$HOME/.nvm"
 
 export PANEL_HEIGHT=16

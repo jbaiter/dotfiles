@@ -7,12 +7,14 @@ set showtabline=never
 set go=ns
 set hintkeys=hjklasdfgzuiopqwertnmyxcvb
 set showstatuslinks=command
-"set nofullscreen
 
-" Use solarized color scheme
-colorscheme solarized-dark
+colorscheme flwr
 
 hi FontFixed -a font: 12px "Meslo LG L DZ" !important;
+hi Normal -link FontFixed
+hi Hint -append -link FontFixed
+hi Comp -append -link FontFixed
+hi CompMsg -append font-style: italic !important;
 
 nmap j 4<Down>
 nmap k 4<Up>
