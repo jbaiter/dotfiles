@@ -55,6 +55,8 @@ Plug 'Lokaltog/vim-easymotion'
 Plug 'tpope/vim-commentary'
 " Ledger syntax
 Plug 'ledger/vim-ledger', {'for': 'ledger'}
+" systemd syntax
+Plug 'Matt-Deacalion/vim-systemd-syntax'
 " Better line numbers
 Plug 'myusuf3/numbers.vim'
 " Fast and fuzzy completion
