@@ -55,7 +55,4 @@ unclutter -idle 2.5 &
 # Start compositor
 compton &
 
-sxhkd &
-$HOME/.bin/bar.sh &
-urxvt &
 exec bspwm

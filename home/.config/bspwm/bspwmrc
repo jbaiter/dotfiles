@@ -26,3 +26,7 @@ bspc config pointer_action3      resize_corner
 
 bspc rule -a Firefox desktop='^3'
 bspc rule -a mpv state=floating
+
+sxhkd &
+$HOME/.bin/bar.sh &
+urxvt &
