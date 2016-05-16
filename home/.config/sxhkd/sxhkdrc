@@ -83,15 +83,19 @@ super + {grave,Tab}
 #    bspc node {older,newer} -f; \
 #    bspc wm -h on
 
-# focus or send to the given desktop
+# focus or send node to the given desktop
 super + {_,shift + }{1-9,0}
     bspc {desktop -f,node -d} '^{1-9,10}'
 
+# focus the given monitor
 super + {q,w}
     bspc monitor -f {secondary,main}
 
-super + {shift,alt} + {q,w}
-    bspc {node,desktop} -m {secondary,main}
+# send node to the given monitor
+super + shift + {q,w}
+    target={secondary,main}; \
+    bspc node -m $target; \
+    bspc monitor -f $target;
 
 #
 # preselect
