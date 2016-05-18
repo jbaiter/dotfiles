@@ -163,6 +163,84 @@ class Bspwm(Widget):
         return "".join(out)
 
 
+class CpuLoad(Widget):
+    CpuTimes = namedtuple("CpuTimes", ["user", "nice", "system", "idle"])
+
+    def __init__(self, *args, **kwargs):
+        self.last_times = []
+        self.load = []
+
+    def _read_times(self):
+        times = []
+        with open("/proc/stat") as fp:
+            for line in fp:
+                if not line.startswith("cpu") or line[3] == ' ':
+                    continue
+                times.append(
+                    self.CpuTimes(*(int(n) for n in line.split(" ")[1:5])))
+        return times
+
+    @staticmethod
+    def calculate(t1, t2):
+        t1_all = sum(t1)
+        t1_busy = t1_all - t1.idle
+        t2_all = sum(t2)
+        t2_busy = t2_all - t2.idle
+        busy_delta = t2_busy - t1_busy
+        all_delta = t2_all - t1_all
+        if all_delta == 0:
+            return 0
+        busy_perc = (busy_delta / all_delta) * 100
+        return busy_perc
+
+    def render(self):
+        def format(avg):
+            if avg > 90:
+                col = color['bad']
+            elif avg < 20:
+                col = color['muted']
+            else:
+                col = ''
+            return fg(col, "{:2}".format(avg))
+        if not self.last_times:
+            self.last_times = self._read_times()
+            return ''
+        else:
+            cur_times = self._read_times()
+            load = [abs(int(self.calculate(t1, t2)))
+                    for t1, t2 in zip(cur_times, self.last_times)]
+            self.last_times = cur_times
+        return '\ue026 ' + ' '.join(format(avg) for avg in load)
+
+
+class Memory(Widget):
+    pat = re.compile(r'^([\w\d]+):\s+(\d+)\s*(?:kB)?$')
+
+    def __init__(self, *args, **kwargs):
+        self.meminfo = None
+
+    @staticmethod
+    def sizeof_fmt(num, suffix='B'):
+        for unit in ['K','M','G','T','P','E','Z']:
+            if abs(num) < 1024.0:
+                return "%3.1f%s%s" % (num, unit, suffix)
+            num /= 1024.0
+        return "%.1f%s%s" % (num, 'Yi', suffix)
+
+    def update(self, line):
+        with open("/proc/meminfo") as fp:
+            self.meminfo = {}
+            for l in fp:
+                match = self.pat.match(l)
+                if match:
+                    key, val = match.groups()
+                    self.meminfo[key] = int(val)
+
+    def render(self):
+        mem_occupied =  self.meminfo['MemTotal'] - self.meminfo['MemAvailable']
+        return '\ue021 ' + self.sizeof_fmt(mem_occupied, suffix='')
+
+
 class WindowTitle(Widget):
     def __init__(self, pipe, hooks):
         self.client = subprocess.Popen(
@@ -216,21 +294,21 @@ class Battery(Widget):
     def render(self):
         c = color['bad'] if not self.charge or self.charge < 30 else color['good']
         if self.charge is None:
-            icon = ' %%{T2}%s%%{T1} ' % self.icon_unknown
+            icon = '%%{T2}%s%%{T1} ' % self.icon_unknown
         elif not self.discharging:
-            icon = ' %%{T2}%s%%{T1} ' % self.icon_charging
+            icon = '%%{T2}%s%%{T1} ' % self.icon_charging
         else:
-            icon = ' %%{T2}%s%%{T1} ' % self.icons[
+            icon = '%%{T2}%s%%{T1} ' % self.icons[
                 round(self.charge / 100 * (len(self.icons) - 1))]
-        return " {}{} {}{} ".format(
+        return "{}{} {}{}".format(
             fg(c, icon), self.charge or '?',
             fg(color['bad' if self.discharging else 'good'], self.icon_rate),
             '?' if self.rate is None else int(self.rate))
 
 
 class PulseAudio(Widget):
-    icon_loud = ' \ue05d '
-    icon_mute = ' \ue04f '
+    icon_loud = '\ue05d '
+    icon_mute = '\ue04f '
 
     @staticmethod
     def available():
@@ -283,7 +361,7 @@ class PulseAudio(Widget):
 class Clock(Widget):
     def render(self):
         return datetime.datetime.now().strftime(
-            '  \ue1cd %a %b %d  \ue017 %H:%M  ')
+            '\ue1cd %a %b %d  \ue017 %H:%M')
 
 
 class Wifi(Widget):
@@ -322,8 +400,6 @@ class Wifi(Widget):
             c = color['bad']
             icon = self.icons[0]
         profile = fg(c, icon) + ' ' + profile
-        if strength > 0:
-            profile += ' ' + fg(color['muted'], str(int(strength))) + ' '
         return profile
 
 
@@ -361,8 +437,8 @@ class Ping(Widget):
 
 
 class MPD(Widget):
-    icon_paused = ' \ue059 '
-    icon_playing = ' \ue05c '
+    icon_paused = '\ue059 '
+    icon_playing = '\ue05c '
     audio_files = ['mp3', 'ogg', 'flac', 'mp4', 'm4a']
 
     @staticmethod
@@ -394,8 +470,8 @@ class MPD(Widget):
         return ''
 
 
-widgets = ['%{l}', Bspwm, '%{c}', WindowTitle, '%{r}', Wifi, Ping, Battery,
-           PulseAudio, Clock]
+widgets = ['%{l}', Bspwm, '%{c}', '  ', CpuLoad, '  ',  Memory, '%{r}',
+           Wifi, ' ', Ping, '  ', Battery, '  ', PulseAudio, '  ', Clock]
 
 if __name__ == '__main__':
     sread, swrite = os.pipe()
