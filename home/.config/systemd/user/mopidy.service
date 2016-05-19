@@ -10,7 +10,8 @@ After=sound.target
 
 [Service]
 Type=simple
-ExecStart=/home/jojo/.local/bin/mopidy
+ExecStart=/home/jojo/.local/bin/mopidy \
+    --config /home/jojo/.config/mopidy/mopdiy.conf:/home/jojo/.config/mopidy/secret.conf
 
 [Install]
 WantedBy=multi-user.target

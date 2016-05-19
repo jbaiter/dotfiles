@@ -29,7 +29,7 @@
 #
 #mpd_port = 6600
 #
-mpd_connection_timeout = 30
+mpd_connection_timeout = 60
 #
 ## Needed for tag editor and file operations to work.
 ##
@@ -235,7 +235,7 @@ mpd_connection_timeout = 30
 ## and "noop".
 ##
 #
-#browser_sort_mode = name
+browser_sort_mode = noop
 #
 #browser_sort_format = {%a - }{%t}|{%f} {(%l)}
 #
