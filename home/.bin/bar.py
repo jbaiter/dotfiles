@@ -365,6 +365,7 @@ class Clock(Widget):
 
 
 class Wifi(Widget):
+    ethernet_icon = '\ue19c'
     icons = ('\ue047', '\ue048')
 
     @staticmethod
@@ -379,7 +380,12 @@ class Wifi(Widget):
         iw = output_of(['sudo', 'iwgetid']).split()
         profile = ''
         if len(iw) == 0:
-            profile = fg(color['muted'], 'disconnected')
+            eth = output_of(['ip', 'addr', 'show', 'eth0'])
+            if 'inet' in eth:
+                profile = ''
+                strength = 'ethernet'
+            else:
+                profile = fg(color['muted'], 'disconnected')
         elif len(iw) < 2 or 'ESSID' not in iw[1]:
             profile = fg(color['muted'], 'connecting')
         else:
@@ -393,7 +399,10 @@ class Wifi(Widget):
                     if cols[0][:-1] == iw[0]:
                         strength = float(cols[2])
                         break
-        if strength > 40:
+        if strength == 'ethernet':
+            c = color['good']
+            icon = self.ethernet_icon
+        elif strength > 40:
             c = color['good']
             icon = self.icons[1]
         else:
