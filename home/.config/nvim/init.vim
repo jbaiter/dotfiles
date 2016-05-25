@@ -237,8 +237,7 @@ set incsearch               " Incrementally search while typing a /regex
 colorscheme mod8
 
 """ Syntastic configuration
-let g:syntastic_mode_map = { 'mode': 'passive',
-                           \ 'active_filetypes': ['python', 'haskell', 'javascript'] }
+let g:syntastic_mode_map = { 'mode': 'active' }
 let g:syntastic_phpcs_disable = 1
 let g:syntastic_javascript_checkers=['eslint']
 let g:syntastic_python_checkers = ['python', 'flake8']
@@ -334,6 +333,8 @@ let g:ycm_key_list_previous_completion = ['<C-k>', '<C-p>', '<Up>']
 let g:ycm_rust_src_path = '~/.multirust/toolchains/stable/src'
 
 set omnifunc=syntaxcomplete#Complete
+
+let g:ycm_rust_src_path = "/usr/src/rustc-1.8.0/src"
 
 au FileType haskell nnoremap <buffer> <F1> :HdevtoolsType<CR>
 au FileType haskell nnoremap <buffer> <silent> <F2> :HdevtoolsClear<CR>
