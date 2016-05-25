@@ -227,7 +227,7 @@ class Memory(Widget):
             num /= 1024.0
         return "%.1f%s%s" % (num, 'Yi', suffix)
 
-    def update(self, line):
+    def render(self):
         with open("/proc/meminfo") as fp:
             self.meminfo = {}
             for l in fp:
@@ -236,7 +236,6 @@ class Memory(Widget):
                     key, val = match.groups()
                     self.meminfo[key] = int(val)
 
-    def render(self):
         mem_occupied =  self.meminfo['MemTotal'] - self.meminfo['MemAvailable']
         return '\ue021 ' + self.sizeof_fmt(mem_occupied, suffix='')
 
@@ -290,6 +289,8 @@ class Battery(Widget):
             self.charge = int(value)
         elif field == 'state':
             self.discharging = (value == 'discharging')
+            if value == 'fully-charged':
+                self.charge = 100
 
     def render(self):
         c = color['bad'] if not self.charge or self.charge < 30 else color['good']

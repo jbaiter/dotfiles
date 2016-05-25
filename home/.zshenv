@@ -9,7 +9,7 @@ elif [ $(hostname) = 'thinkpad' ]; then
 fi
 export EDITOR="nvim"
 export VISUAL="nvim"
-export PATH="$HOME/.bin:$HOME/.local/bin:$HOME/.cargo/bin:$PATH"
+export PATH="/sbin:/usr/sbin:$HOME/.bin:$HOME/.local/bin:$HOME/.cargo/bin:$PATH"
 export CFLAGS="-O2 -pipe -march=native"
 export CXXFLAGS="${CFLAGS}"
 export LANG=en_US.UTF-8
@@ -20,6 +20,7 @@ export WORKON_HOME=$HOME/.envs
 export MOZ_PLUGIN_PATH='/usr/lib/mozilla/plugins'
 #export TERM="screen-256color"
 export NVM_DIR="$HOME/.nvm"
+export CARGO_HOME="$HOME/.cargo"
 
 export PANEL_HEIGHT=16
 
