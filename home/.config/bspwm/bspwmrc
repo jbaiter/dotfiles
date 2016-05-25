@@ -26,9 +26,15 @@ bspc config pointer_action3      resize_corner
 
 bspc rule -a Firefox desktop='^3'
 bspc rule -a mpv state=floating
+bspc rule -a vis desktop='^2'
+bspc rule -a ncmpcpp desktop='^2' split_dir='west'
+bspc rule -a mutt desktop='^2' split_dir='east'
 
 sxhkd &
 $HOME/.bin/bar.sh &
 $HOME/.bin/autolock.sh &
+urxvt -title "vis" -e bash -c "TERM=rxvt-unicode vis" &
+urxvt -title "ncmpcpp" -e bash -c "TERM=rxvt-unicode ncmpcpp" &
+urxvt -title "mutt" -e bash -c "TERM=rxvt-unicode mutt" &
 dunst &
 urxvt &
